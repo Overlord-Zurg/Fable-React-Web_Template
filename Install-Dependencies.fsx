@@ -32,7 +32,7 @@ else
         npmInstall "react"
         npmInstall "react-dom"
 
-    if not (Directory.Exists "DasLegitimateVotingVebsite/libs") then
-        Directory.CreateDirectory("DasLegitimateVotingVebsite/libs") |> ignore    
-        File.Copy("node_modules/react/dist/react.js", "DasLegitimateVotingVebsite/libs/react.js")
-        File.Copy("node_modules/react-dom/dist/react-dom.js", "DasLegitimateVotingVebsite/libs/react-dom.js")
+    if not (Directory.Exists "_Fable_Project_/libs") then
+        Directory.CreateDirectory("_Fable_Project_/libs") |> ignore    
+        File.Copy("node_modules/react/dist/react.js", "_Fable_Project_/libs/react.js")
+        File.Copy("node_modules/react-dom/dist/react-dom.js", "_Fable_Project_/libs/react-dom.js")
