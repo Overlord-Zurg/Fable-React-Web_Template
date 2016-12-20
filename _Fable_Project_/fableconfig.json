@@ -1,0 +1,12 @@
+﻿{
+  "projFile": "./UI/Fable-Main.fsx",
+  "rollup": {
+    "dest": "./out/bundle.js",
+    "external": [ "react", "react-dom" ],
+    "globals": {
+      "react": "React",
+      "react-dom": "ReactDOM"
+    }
+  },
+  "coreLib": "../node_modules/fable-core"
+}
