@@ -7,11 +7,17 @@ let isElevated =
     let principal = new WindowsPrincipal(identity)
     principal.IsInRole(WindowsBuiltInRole.Administrator)
 
-if not isElevated then
+if isElevated then
     failwith "Install-Dependencies should be run with administrator privileges, just to be on the safe side."
 else
-    let npmInstall name =
-        Process.Start("npm", sprintf "install %s" name) |> ignore
+    let npmInstall name = async {
+        let proc = Process.Start("npm", sprintf "install %s" name)
+        do proc.WaitForExit()
+        if proc.ExitCode = 0 then
+            printfn "Successfully installed %s" name
+        else
+            printfn "Exit code %i while attempting to install %s" proc.ExitCode name
+        return proc.ExitCode = 0 }
 
     Directory.SetCurrentDirectory(__SOURCE_DIRECTORY__)
 
@@ -26,11 +32,14 @@ else
     | x -> printfn "I don'w know what exit code %i means" x
 
     if not (Directory.Exists "node_modules") then
-        npmInstall "fable-core"
-        npmInstall "fable-powerpack"
-        npmInstall "fable-react"
-        npmInstall "react"
-        npmInstall "react-dom"
+        [   npmInstall "fable-core"
+            npmInstall "fable-powerpack"
+            npmInstall "fable-react"
+            npmInstall "react"
+            npmInstall "react-dom" ]
+        |> Async.Parallel
+        |> Async.RunSynchronously
+        |> Array.iter (ignore)
 
     if not (Directory.Exists "_Fable_Project_/libs") then
         Directory.CreateDirectory("_Fable_Project_/libs") |> ignore    
