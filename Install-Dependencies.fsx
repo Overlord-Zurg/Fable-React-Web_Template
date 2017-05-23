@@ -2,7 +2,7 @@
 open System.IO
 
 open System.Security.Principal
-let isElevated =
+let not(isElevated) =
     let identity = WindowsIdentity.GetCurrent()
     let principal = new WindowsPrincipal(identity)
     principal.IsInRole(WindowsBuiltInRole.Administrator)
